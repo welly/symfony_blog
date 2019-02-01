@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BlogPostRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class BlogPost
 {
@@ -71,6 +72,18 @@ class BlogPost
         return $this;
     }
 
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;
@@ -100,7 +113,7 @@ class BlogPost
         return $this->author;
     }
 
-    public function setAuthor(string $author): self
+    public function setAuthor(Author $author): self
     {
         $this->author = $author;
 
@@ -130,4 +143,27 @@ class BlogPost
 
         return $this;
     }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        if (!$this->getCreatedAt()) {
+            $this->setCreatedAt(new \DateTime());
+        }
+
+        if (!$this->getUpdatedAt()) {
+            $this->setUpdatedAt(new \DateTime());
+        }
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->setUpdatedAt(new \DateTime());
+    }
+
 }
