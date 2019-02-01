@@ -22,14 +22,14 @@ class Author
     private $name;
 
     /**
-     * @ORM\Column(name="title", type="string", length=255)
-     */
-    private $title;
-
-    /**
      * @ORM\Column(name="username", type="string", length=255)
      */
     private $username;
+
+    /**
+     * @ORM\Column(name="title", type="string", length=255)
+     */
+    private $title;
 
     /**
      * @ORM\Column(name="company", type="string", length=255)
@@ -74,6 +74,18 @@ class Author
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
 
         return $this;
     }
